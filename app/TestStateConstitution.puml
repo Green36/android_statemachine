@@ -1,0 +1,60 @@
+@startuml
+
+state StateRoot {
+    StateA --> StateB : 通常遷移
+    StateB --> StateC_su : サブ状態を持つ状態へ遷移
+    StateA --> StateC_su_SubA : サブ状態へ遷移
+    state StateB {
+    }
+    state StateA {
+    }
+
+    state StateC_su{
+        [*] --> StateC_su_SubB
+        StateC_su_SubB --> StateC_su_SubA
+        state StateC_su_SubA{
+        }
+        state StateC_su_SubB{
+        }
+        state StateC_su_A_st {
+            state StateC_su_A_st_A_st {
+                StateC_su_A_st_A_st_A_su --> StateC_su_A_st_A_st_B_su : ネストした静的状態以下での遷移
+                StateC_su_A_st_A_st_B_su --> StateC_su_A_st_A_st_A_su
+                state StateC_su_A_st_A_st_A_su {
+                }
+                state StateC_su_A_st_A_st_B_su {
+                }
+            }
+        }
+    }
+
+    state StateA_static {
+        state StateA_static_A_static {
+        }
+    }
+
+}
+
+@enduml
+Static状態 ・・・ xxxx_st
+Sub状態 ・・・ xxx_su
+
+■テストケース
+1. サブ状態 -> サブ状態
+2. サブ状態 -> 子サブ状態
+3. サブ状態 -> 親サブ状態
+静的状態内(StaticStateA)
+　4. サブ状態 -> サブ状態
+　5. サブ状態 -> 子サブ状態
+　6. サブ状態 -> 親サブ状態
+　7. サブ状態 -> 別サブ状態
+　静的状態内(StaticStateB)
+　　8. サブ状態 -> サブ状態
+　　9. サブ状態 -> 子サブ状態
+　　10. サブ状態 -> 親サブ状態
+　　11. サブ状態 -> 別サブ状態
+
+■観点
+* 遷移できること
+* 初期状態が適切に設定されていること
+
